@@ -7,14 +7,13 @@
 Summary:	Library for complex text layout
 Summary(pl.UTF-8):	Biblioteka do skomplikowanego układu tekstu
 Name:		libraqm
-Version:	0.2.0
+Version:	0.5.0
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/HOST-Oman/libraqm/releases
 Source0:	https://github.com/HOST-Oman/libraqm/releases/download/v%{version}/raqm-%{version}.tar.gz
-# Source0-md5:	0a693640ac3aa5c25b533de7dce2cce3
-Patch0:		%{name}-format.patch
+# Source0-md5:	ba4a3deb05ad089df813b2d1057b1dd8
 URL:		https://github.com/HOST-Oman/libraqm
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.11
@@ -22,7 +21,7 @@ BuildRequires:	automake >= 1:1.11
 BuildRequires:	freetype-devel >= 1:2.4.2
 BuildRequires:	fribidi-devel
 %{?with_tests:BuildRequires:	glib2-devel >= 2.0}
-%if %{with tests} && %(locale -a | grep -q '^C\.UTF-8$'; echo $?)
+%if %{with tests} && %(locale -a | grep -q '^C\.utf8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
 BuildRequires:	gtk-doc >= 1.14
@@ -91,7 +90,6 @@ Dokumentacja API biblioteki Raqm.
 
 %prep
 %setup -q -n raqm-%{version}
-%patch0 -p1
 
 %build
 # rebuild ac/am for as-needed to work
