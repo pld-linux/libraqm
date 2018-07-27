@@ -4,11 +4,13 @@
 %bcond_without	static_libs	# static library
 %bcond_without	tests		# unit tests
 #
+%define		fribidi_ver	1.0.3
+#
 Summary:	Library for complex text layout
 Summary(pl.UTF-8):	Biblioteka do skomplikowanego układu tekstu
 Name:		libraqm
 Version:	0.5.0
-Release:	2
+Release:	3
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/HOST-Oman/libraqm/releases
@@ -19,7 +21,7 @@ BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.11
 # pkgconfig(freetype2) >= 12.0.6
 BuildRequires:	freetype-devel >= 1:2.4.2
-BuildRequires:	fribidi-devel
+BuildRequires:	fribidi-devel >= %{fribidi_ver}
 %{?with_tests:BuildRequires:	glib2-devel >= 2.0}
 %if %{with tests} && %(locale -a | grep -q '^C\.utf8$'; echo $?)
 BuildRequires:	glibc-localedb-all
@@ -28,6 +30,7 @@ BuildRequires:	gtk-doc >= 1.14
 BuildRequires:	harfbuzz-devel
 BuildRequires:	libtool >= 2:2
 BuildRequires:	pkgconfig >= 1:0.20
+Requires:	fribidi >= %{fribidi_ver}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -53,7 +56,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Raqm
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	freetype-devel >= 1:2.4.2
-Requires:	fribidi-devel
+Requires:	fribidi-devel >= %{fribidi_ver}
 Requires:	harfbuzz-devel
 
 %description devel
