@@ -8,7 +8,7 @@ Summary:	Library for complex text layout
 Summary(pl.UTF-8):	Biblioteka do skomplikowanego układu tekstu
 Name:		libraqm
 Version:	0.5.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/HOST-Oman/libraqm/releases
