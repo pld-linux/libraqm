@@ -9,13 +9,13 @@
 Summary:	Library for complex text layout
 Summary(pl.UTF-8):	Biblioteka do skomplikowanego układu tekstu
 Name:		libraqm
-Version:	0.5.0
-Release:	3
+Version:	0.7.0
+Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/HOST-Oman/libraqm/releases
 Source0:	https://github.com/HOST-Oman/libraqm/releases/download/v%{version}/raqm-%{version}.tar.gz
-# Source0-md5:	ba4a3deb05ad089df813b2d1057b1dd8
+# Source0-md5:	d75dbe365fabebd053a9aecfc3d9e09f
 URL:		https://github.com/HOST-Oman/libraqm
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.11
@@ -137,6 +137,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libraqm.so
 %{_includedir}/raqm.h
+%{_includedir}/raqm-version.h
 %{_pkgconfigdir}/raqm.pc
 
 %if %{with static_libs}
