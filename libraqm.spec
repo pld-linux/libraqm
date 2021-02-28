@@ -81,9 +81,7 @@ Statyczna biblioteka Raqm.
 Summary:	API documentation for Raqm library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki Raqm
 Group:		Documentation
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 API documentation for Raqm library.
