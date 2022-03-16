@@ -4,32 +4,34 @@
 %bcond_without	static_libs	# static library
 %bcond_without	tests		# unit tests
 #
-%define		fribidi_ver	1.0.3
+%define		fribidi_ver	1.0.6
 #
 Summary:	Library for complex text layout
 Summary(pl.UTF-8):	Biblioteka do skomplikowanego układu tekstu
 Name:		libraqm
-Version:	0.7.0
+Version:	0.9.0
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/HOST-Oman/libraqm/releases
-Source0:	https://github.com/HOST-Oman/libraqm/releases/download/v%{version}/raqm-%{version}.tar.gz
-# Source0-md5:	d75dbe365fabebd053a9aecfc3d9e09f
+Source0:	https://github.com/HOST-Oman/libraqm/releases/download/v%{version}/raqm-%{version}.tar.xz
+# Source0-md5:	10229aa3fad2a70e5dd4c693995da823
 URL:		https://github.com/HOST-Oman/libraqm
-BuildRequires:	autoconf >= 2.50
-BuildRequires:	automake >= 1:1.11
-# pkgconfig(freetype2) >= 12.0.6
-BuildRequires:	freetype-devel >= 1:2.4.2
+# pkgconfig(freetype2) >= 24.0.18
+BuildRequires:	freetype-devel >= 1:2.11.0
 BuildRequires:	fribidi-devel >= %{fribidi_ver}
 %{?with_tests:BuildRequires:	glib2-devel >= 2.0}
 %if %{with tests} && %(locale -a | grep -q '^C\.utf8$'; echo $?)
 BuildRequires:	glibc-localedb-all
 %endif
 BuildRequires:	gtk-doc >= 1.14
-BuildRequires:	harfbuzz-devel
-BuildRequires:	libtool >= 2:2
+BuildRequires:	harfbuzz-devel >= 3.0.0
+BuildRequires:	meson
+BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig >= 1:0.20
+BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 Requires:	fribidi >= %{fribidi_ver}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -55,9 +57,9 @@ Summary:	Header files for Raqm library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Raqm
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	freetype-devel >= 1:2.4.2
+Requires:	freetype-devel >= 1:2.11.0
 Requires:	fribidi-devel >= %{fribidi_ver}
-Requires:	harfbuzz-devel
+Requires:	harfbuzz-devel >= 3.0.0
 
 %description devel
 Header files for Raqm library.
@@ -93,31 +95,20 @@ Dokumentacja API biblioteki Raqm.
 %setup -q -n raqm-%{version}
 
 %build
-# rebuild ac/am for as-needed to work
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--disable-silent-rules \
-	%{!?with_static_libs:--disable-static} \
-	--with-html-dir=%{_gtkdocdir}
-%{__make}
+%meson build \
+	-Ddocs=true
+
+%ninja_build -C build
 
 %if %{with tests}
 LC_ALL=C.UTF-8 \
-%{__make} check
+%ninja_test -C build
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
-
-# obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libraqm.la
+%ninja_install -C build
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -127,7 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING NEWS README
+%doc AUTHORS COPYING NEWS README.md
 %attr(755,root,root) %{_libdir}/libraqm.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libraqm.so.0
 
