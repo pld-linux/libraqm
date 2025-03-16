@@ -9,13 +9,13 @@
 Summary:	Library for complex text layout
 Summary(pl.UTF-8):	Biblioteka do skomplikowanego układu tekstu
 Name:		libraqm
-Version:	0.9.0
+Version:	0.10.2
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/HOST-Oman/libraqm/releases
 Source0:	https://github.com/HOST-Oman/libraqm/releases/download/v%{version}/raqm-%{version}.tar.xz
-# Source0-md5:	10229aa3fad2a70e5dd4c693995da823
+# Source0-md5:	ad99436e043caebbee6392a530c86d8e
 URL:		https://github.com/HOST-Oman/libraqm
 # pkgconfig(freetype2) >= 24.0.18
 BuildRequires:	freetype-devel >= 1:2.11.0
@@ -26,10 +26,10 @@ BuildRequires:	glibc-localedb-all
 %endif
 BuildRequires:	gtk-doc >= 1.14
 BuildRequires:	harfbuzz-devel >= 3.0.0
-BuildRequires:	meson
+BuildRequires:	meson >= 0.56.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig >= 1:0.20
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires:	fribidi >= %{fribidi_ver}
@@ -95,20 +95,20 @@ Dokumentacja API biblioteki Raqm.
 %setup -q -n raqm-%{version}
 
 %build
-%meson build \
+%meson \
 	-Ddocs=true
 
-%ninja_build -C build
+%meson_build
 
 %if %{with tests}
 LC_ALL=C.UTF-8 \
-%ninja_test -C build
+%meson_test
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
